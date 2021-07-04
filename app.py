@@ -30,7 +30,3 @@ def hello_world():
     return jsonify({ 'version': '0.5',
                      'author': 'Ryan',
                      })
-
-
-if __name__ == '__main__':
-    app.run()
