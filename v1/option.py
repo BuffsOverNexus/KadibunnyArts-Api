@@ -41,7 +41,7 @@ def save_option():
 
 
 @option_blueprint.route('/v1/option/by-key')
-def save_option():
+def get_option_by_key():
     key = request.json['key']
     session = Session()
     option = session.query(Option).filter_by(key=key).first()

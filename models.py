@@ -11,7 +11,8 @@ class Account(Base, SerializerMixin):
     id = Column(Integer, primary_key=True)
     username = Column(String(100))
     email = Column(String(320))
-    password = Column(String(25))
+    password = Column(String(64))
+    admin = Column(Boolean, default=False)
     orders = relationship('Order')
 
     def default(self, o):
