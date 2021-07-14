@@ -54,10 +54,21 @@ def create_account():
 @account_blueprint.route('/v1/account/change-password', methods=['POST'])
 def change_password():
     account_id = int(request.json['id'])
-    password = hashlib.sha256(request.json['password'].encode())
+    password = hashlib.sha256(request.json['password'].encode()).hexdigest()
     session = Session()
     account = session.query(Account).filter_by(id=account_id).first()
     account.password = password
-
+    session.commit()
     session.close()
-    return jsonify(account)
+    return jsonify(True)
+
+@account_blueprint.route('/v1/account/update-email', methods=['POST'])
+def update_email():
+    account_id = int(request.json['id'])
+    email = request.json['email']
+    session = Session()
+    account = session.query(Account).filter_by(id=account_id).first()
+    account.email = email
+    session.commit()
+    session.close()
+    return jsonify(True)

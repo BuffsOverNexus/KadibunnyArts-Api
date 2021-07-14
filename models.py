@@ -33,7 +33,7 @@ class Order(Base, SerializerMixin):
     cost = Column(Float)
     emotes = relationship('Emote')
 
-    twitch = Column(String(100), nullable=True)
+    twitch = Column(String(250), nullable=True)
     date_finished = Column(DateTime, default=None, nullable=True)
 
 class Emote(Base, SerializerMixin):
@@ -50,5 +50,5 @@ class Option(Base, SerializerMixin):
     __tablename__ = 'option'
 
     id = Column(Integer, primary_key=True)
-    key = Column(String(25))
-    value = Column(String(100))
+    key = Column(String(50))
+    value = Column(String(200))
