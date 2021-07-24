@@ -3,6 +3,7 @@ from sqlalchemy import asc
 
 from database import Session
 from models import Option
+from v1.default_options import OptionType
 
 option_blueprint = Blueprint('option_blueprint', __name__)
 
@@ -47,7 +48,7 @@ def save_all_options():
     for o in options:
         session.begin()
         option = session.query(Option).filter_by(id=o['id']).first()
-        if o['type'] is 0:
+        if o['type'] is OptionType.TOGGLE:
             option.value = str(o['value']).lower()
         else:
             option.value = str(o['value'])
@@ -69,30 +70,3 @@ def get_option_by_key():
         option = option.to_dict()
     session.close()
     return jsonify(option)
-
-# The website should have default keys that are automatically used.
-def create_default_keys():
-    session = Session()
-    has_commission_status = session.query(Option).filter_by(key="COMMISSION_STATUS").first() is not None
-    has_disabled_message = session.query(Option).filter_by(key="COMMISSION_DISABLED_MESSAGE").first() is not None
-
-    option_commission_available = Option()
-    option_commission_disabled_message = Option()
-    option_commission_available.key = "COMMISSION_STATUS"
-    option_commission_available.value = "false"
-    option_commission_available.type = 0
-    option_commission_available.title = "Commission Form Availability"
-    option_commission_available.description = "Allow new commission requests?"
-
-    option_commission_disabled_message.key = "COMMISSION_DISABLED_MESSAGE"
-    option_commission_disabled_message.value = "New commission requests are currently unavailable. Please try again later."
-    option_commission_disabled_message.type = 2 # Text Area
-    option_commission_disabled_message.title = "Commissions Unavailable Message"
-    option_commission_disabled_message.description = "Please enter in what the user will see when visiting the Commissions form when it is not available:"
-
-    if not has_commission_status:
-        session.add(option_commission_available)
-    if not has_disabled_message:
-        session.add(option_commission_disabled_message)
-    session.commit()
-    session.close()
