@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, Date, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, Date, Boolean, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy_serializer import SerializerMixin
 
@@ -14,9 +14,6 @@ class Account(Base, SerializerMixin):
     password = Column(String(64))
     admin = Column(Boolean, default=False)
     orders = relationship('Order')
-
-    def default(self, o):
-        return o.__dict__
 
 
 class Order(Base, SerializerMixin):
@@ -51,4 +48,7 @@ class Option(Base, SerializerMixin):
 
     id = Column(Integer, primary_key=True)
     key = Column(String(50))
-    value = Column(String(200))
+    value = Column(Text)
+    title = Column(String(100))
+    type = Column(Integer)
+    description = Column(Text)

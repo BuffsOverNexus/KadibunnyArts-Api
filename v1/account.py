@@ -14,6 +14,7 @@ def get_account_by_id():
     session = Session()
     account = session.query(Account).filter_by(id=account_id).first()
     if account is not None:
+        account.password = None
         account = account.to_dict()
     session.close()
     return jsonify(account)
@@ -25,6 +26,7 @@ def get_account_by_login():
     session = Session()
     account = session.query(Account).filter_by(username=username, password=password).first()
     if account is not None:
+        account.password = None
         account = account.to_dict()
     session.close()
     return jsonify(account)
@@ -43,6 +45,7 @@ def create_account():
         account = Account(username=username, email=email, password=password, orders=orders)
         session.add(account)
         session.commit()
+        account.password = None
         account = account.to_dict()
         session.close()
         return jsonify(account)
