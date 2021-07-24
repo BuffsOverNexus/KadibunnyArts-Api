@@ -47,7 +47,7 @@ class Option(Base, SerializerMixin):
     __tablename__ = 'option'
 
     id = Column(Integer, primary_key=True)
-    key = Column(String(50))
+    key = Column(String(100))
     value = Column(Text)
     title = Column(String(100))
     type = Column(Integer)
